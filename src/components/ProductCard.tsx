@@ -1,5 +1,3 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -9,6 +7,7 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 type propType = {
   name: string;
@@ -46,8 +45,9 @@ export default function ProducCard({
         <CardMedia
           component="img"
           height="140"
-          image="src\assets\images\airpods.jpg"
+          image="src\assets\images\Drum1.png"
           alt="green iguana"
+          sx={{ objectFit: "contain" }}
         />
         <CardContent>
           <Typography
@@ -91,9 +91,10 @@ export default function ProducCard({
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "center" }}>
           <Button
+            startIcon={<ShoppingCartIcon />}
             sx={{
               color: "white",
-              display: "block",
+
               bgcolor: "black",
               borderRadius: "15px",
               width: "100%",

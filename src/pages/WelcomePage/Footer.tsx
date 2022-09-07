@@ -7,7 +7,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function Footer() {
   return (
-    <Box sx={{ bottom: 0, bgcolor: "black" }}>
+    <Box
+      sx={{
+        bottom: 0,
+        bgcolor: "black",
+        position: "absolute",
+        width: "100%",
+      }}
+    >
       <Box sx={{ p: 5, pb: 0 }}>
         <Typography
           variant="h1"
@@ -75,13 +82,14 @@ export default function Footer() {
           p: 2,
         }}
       >
-        CopyRight <span>&#169;</span>{" "}
+        Copyright <span>&#169;</span>{" "}
         <a
           href="https://www.linkedin.com/in/alexander-garzo/"
           style={{ color: "rgba(255,255,255,0.1)" }}
         >
           Alexander Garzo
         </a>{" "}
+        2022
       </Box>
     </Box>
   );

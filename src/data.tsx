@@ -76,7 +76,7 @@ const products = [
   {
     _id: "2",
     name: "Car20",
-    image: "/images/airpodes.jpg",
+    image: "/images/Drum1.png",
     description: "Acool description goes here!",
     brand: "My brand",
     Category: "My category",

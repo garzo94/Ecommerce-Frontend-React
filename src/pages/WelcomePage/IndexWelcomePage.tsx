@@ -7,7 +7,6 @@ export default function IndexWelcomePage() {
     <>
       <Header />
       <Main />
-      <Footer />
     </>
   );
 }

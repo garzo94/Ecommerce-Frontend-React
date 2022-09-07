@@ -4,13 +4,14 @@ import { Grid, Box } from "@mui/material";
 import ProductCard from "../../components/ProductCard";
 import { CardItem } from "../../types/Types";
 import image from "../../assets/images/back.jpg";
+import Footer from "./Footer";
 
 export default function Main() {
   return (
-    <>
+    <Box sx={{ position: "relative", height: "100%" }}>
       <Box
         sx={{
-          height: "500px",
+          height: "100%",
           width: "100%",
           position: "relative",
           bgcolor: "black",
@@ -19,7 +20,7 @@ export default function Main() {
         <Box
           component="img"
           src="src\assets\back.jpg"
-          sx={{ height: "500px", width: "1346px" }}
+          sx={{ height: "100%", width: "100%", objectFit: "contain" }}
         ></Box>
         <h1
           style={{
@@ -27,7 +28,7 @@ export default function Main() {
             fontSize: "5.5rem",
             color: "#fff",
             top: 100,
-            fontFamily: "'Russo One'",
+            fontFamily: "'Russo One', sans-serif",
             marginLeft: 80,
           }}
         >
@@ -52,10 +53,11 @@ export default function Main() {
         spacing={3}
         sx={{
           p: 5,
+          pb: 35,
           display: "flex",
           flexDirection: "center",
           justifyContent: "center",
-          bgcolor: "#9A9A9A",
+          bgcolor: "rgb(204,193,185)",
         }}
       >
         {products.map((product: CardItem) => {
@@ -73,6 +75,7 @@ export default function Main() {
           );
         })}
       </Grid>
-    </>
+      <Footer />
+    </Box>
   );
 }
