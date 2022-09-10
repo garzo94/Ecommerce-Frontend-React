@@ -1,6 +1,6 @@
 import React from "react";
 import products from "../../data";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 import ProductCard from "../../components/ProductCard";
 import { CardItem } from "../../types/Types";
 import image from "../../assets/images/back.jpg";
@@ -11,7 +11,7 @@ export default function Main() {
     <Box sx={{ position: "relative", height: "100%" }}>
       <Box
         sx={{
-          height: "100%",
+          height: "100% ",
           width: "100%",
           position: "relative",
           bgcolor: "black",
@@ -22,40 +22,43 @@ export default function Main() {
           src="src\assets\back.jpg"
           sx={{ height: "100%", width: "100%", objectFit: "contain" }}
         ></Box>
-        <h1
-          style={{
+        <Typography
+          sx={{
             position: "absolute",
-            fontSize: "5.5rem",
+            fontSize: { lg: 90, md: 80, sm: 60, xs: 40 },
+            left: { sm: -590, xs: -600 },
             color: "#fff",
-            top: 100,
+            top: { sm: 75, top: 35 },
             fontFamily: "'Russo One', sans-serif",
             marginLeft: 80,
           }}
         >
           {" "}
           DrumShop
-        </h1>
-        <h6
-          style={{
+        </Typography>
+        <Typography
+          sx={{
             position: "absolute",
-            fontSize: "1rem",
+            fontSize: { lg: 20, md: 15, sm: 15, xs: 10 },
+            left: { sm: -583, xs: -598 },
             color: "#fff",
-            top: 210,
-            fontFamily: "sans-serif",
-            marginLeft: 90,
+            top: { md: 185, sm: 148, xs: 85 },
+            fontFamily: "'Russo One', sans-serif",
+            marginLeft: 80,
           }}
         >
-          Live to drum. Drum to live.
-        </h6>
+          {" "}
+          Drum to live. Drum to live
+        </Typography>
       </Box>
       <Grid
         container
-        spacing={3}
+        spacing={4}
         sx={{
-          p: 5,
-          pb: 35,
+          p: 10,
+
           display: "flex",
-          flexDirection: "center",
+
           justifyContent: "center",
           bgcolor: "rgb(204,193,185)",
         }}
