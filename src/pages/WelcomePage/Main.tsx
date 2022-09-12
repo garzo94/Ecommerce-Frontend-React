@@ -1,12 +1,42 @@
-import React from "react";
-import products from "../../data";
+import React, { useState, useEffect } from "react";
 import { Grid, Box, Typography } from "@mui/material";
 import ProductCard from "../../components/ProductCard";
 import { CardItem } from "../../types/Types";
-import image from "../../assets/images/back.jpg";
+// import image from "../../assets/images/back.jpg";
 import Footer from "./Footer";
-
+import axios from "axios";
+// import products from "../../data";
+type ProductsType = {
+  _id: string;
+  name: string;
+  image: string;
+  description: string;
+  brand: string;
+  Category: string;
+  price: number;
+  countInStock: number;
+  rating: number;
+  numReviews: number;
+};
 export default function Main() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:8000/api/products/")
+      .then((response) => response.json())
+      .then((data) => setProducts(data));
+  });
+
+  // useEffect(() => {
+  //   axios
+  //     .get<ProductsType[]>("/api/products/")
+  //     .then((res) => {
+  //       console.log(res, "que pedo");
+  //     })
+  //     .catch((err: any) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
   return (
     <Box sx={{ position: "relative", height: "100%" }}>
       <Box

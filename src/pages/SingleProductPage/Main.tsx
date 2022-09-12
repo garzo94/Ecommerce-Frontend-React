@@ -1,6 +1,6 @@
 import React from "react";
 
-import CardMedia from "@mui/material/CardMedia";
+import { CardMedia } from "@mui/material";
 import { Box, Typography, Stack, Button, Link, Rating } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";

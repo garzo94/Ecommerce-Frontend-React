@@ -1,5 +1,3 @@
-import { SingleBedSharp } from "@mui/icons-material";
-
 const products = [
   {
     _id: "1",
