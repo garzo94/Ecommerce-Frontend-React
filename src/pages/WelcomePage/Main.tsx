@@ -6,25 +6,14 @@ import { CardItem } from "../../types/Types";
 import Footer from "./Footer";
 import axios from "axios";
 // import products from "../../data";
-type ProductsType = {
-  _id: string;
-  name: string;
-  image: string;
-  description: string;
-  brand: string;
-  Category: string;
-  price: number;
-  countInStock: number;
-  rating: number;
-  numReviews: number;
-};
+
 export default function Main() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     fetch("http://localhost:8000/api/products/")
       .then((response) => response.json())
       .then((data) => setProducts(data));
-  });
+  }, []);
 
   // useEffect(() => {
   //   axios
@@ -100,9 +89,10 @@ export default function Main() {
                 name={product.name}
                 img={product.image}
                 desc={product.description}
-                rating={product.rating}
+                rating={parseInt(product.rating)}
                 price={product.price}
                 reviews={product.numReviews}
+                id={product._id}
               />
             </Grid>
           );

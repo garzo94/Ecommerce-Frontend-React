@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { CardMedia } from "@mui/material";
 import { Box, Typography, Stack, Button, Link, Rating } from "@mui/material";
@@ -8,20 +8,21 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import Footer from "../WelcomePage/Footer";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const sigleProduct = {
-  _id: "1",
-  name: "Car20",
-  image: "/images/airpodes.jpg",
-  description: "Acool description goes here!",
-  brand: "My brand",
-  Category: "My category",
-  price: 45.56,
-  countInStock: 10,
-  rating: 4.5,
-  numReviews: 12,
-};
+import { useParams } from "react-router-dom";
 
 export default function Main() {
+  const [idProduct, setIdProduct] = useState<any>({});
+  console.log(idProduct.rating);
+  let { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      fetch(`http://localhost:8000/api/products/${id}/`)
+        .then((response) => response.json())
+        .then((data) => setIdProduct(data));
+    }
+  }, [id]);
+
   return (
     <Box
       sx={{
@@ -34,7 +35,6 @@ export default function Main() {
       <Box
         sx={{
           display: "flex",
-
           flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
         }}
       >
@@ -47,8 +47,8 @@ export default function Main() {
           <CardMedia
             component="img"
             height="100%"
-            image="src\assets\images\Drum1.png"
-            alt="green iguana"
+            image={`http://127.0.0.1:8000${idProduct?.image}`}
+            alt="Drum image"
             sx={{ objectFit: "contain", pt: { lg: 0, md: 0, xs: 5 } }}
           />
           <Stack
@@ -114,7 +114,7 @@ export default function Main() {
               fontWeight: "600",
             }}
           >
-            Air Pods
+            {idProduct.name}
           </Typography>
           <Stack
             direction="row"
@@ -125,29 +125,25 @@ export default function Main() {
             }}
           >
             <Rating
+              key={"rating"}
               name="half-rating-read"
-              defaultValue={4.5}
+              value={parseInt(idProduct.rating)}
               precision={0.5}
               readOnly
             />
             <Typography
-              sx={{ fontSize: 12, mb: 0 }}
+              sx={{ fontSize: 12, mb: 0, ml: 1 }}
               color="text.secondary"
               gutterBottom
             >
-              {`12 reviews`}
+              {idProduct.numReviews + " reviews"}
             </Typography>
           </Stack>
           <Typography sx={{ mt: 3.5, fontSize: 30, fontWeight: "600" }}>
-            $ 20.45
+            {"$ " + idProduct.price}
           </Typography>
           <Typography sx={{ pr: 3, fontSize: 14, textAlign: "justify" }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et quidem
-            iure fortasse, sed tamen non gravissimum est testimonium
-            multitudinis. Philosophi autem in suis lectulis plerumque moriuntur.
-            Pudebit te, inquam, illius tabulae, quam Cleanthes sane commode
-            verbis depingere solebat. , inquam, illius tabulae, quam Cleanthes
-            sane commode verbis depingere solebat.
+            {idProduct.description}
           </Typography>
           <Button
             startIcon={<ShoppingCartIcon />}

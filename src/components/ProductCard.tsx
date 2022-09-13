@@ -18,6 +18,7 @@ type propType = {
   rating: number;
   price: number;
   reviews: number;
+  id: string;
 };
 
 export default function ProducCard({
@@ -27,9 +28,10 @@ export default function ProducCard({
   rating,
   price,
   reviews,
+  id,
 }: propType) {
   return (
-    <Link to="/product:id" style={{ textDecoration: "none" }}>
+    <Link to={`product/${id}`} style={{ textDecoration: "none" }}>
       <Card
         sx={{
           minWidth: 275,
@@ -47,7 +49,7 @@ export default function ProducCard({
         <CardMedia
           component="img"
           height="140"
-          image="src\assets\images\Drum1.png"
+          image={`http://127.0.0.1:8000${img}`}
           alt="green iguana"
           sx={{ objectFit: "contain" }}
         />

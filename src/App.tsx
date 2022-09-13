@@ -14,7 +14,7 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<IndexWelcomePage />} />
-          <Route path="/product:id" element={<IndexSingleProduc />} />
+          <Route path="/product/:id" element={<IndexSingleProduc />} />
         </Routes>
       </Box>
     </Router>
