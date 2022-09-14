@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { CardMedia } from "@mui/material";
 import { Box, Typography, Stack, Button, Link, Rating } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -7,19 +6,19 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Footer from "../WelcomePage/Footer";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
 import { useParams } from "react-router-dom";
-
+import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+import { getProduct } from "../features/productSlice";
 export default function Main() {
-  const [idProduct, setIdProduct] = useState<any>({});
-  console.log(idProduct.rating);
+  const { singleProduct, loading } = useAppSelector((state) => state.products);
+  const dispatch = useAppDispatch();
+
+  console.log(singleProduct.rating);
   let { id } = useParams();
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:8000/api/products/${id}/`)
-        .then((response) => response.json())
-        .then((data) => setIdProduct(data));
+      dispatch(getProduct({ id }));
     }
   }, [id]);
 
@@ -47,7 +46,7 @@ export default function Main() {
           <CardMedia
             component="img"
             height="100%"
-            image={`http://127.0.0.1:8000${idProduct?.image}`}
+            image={`http://127.0.0.1:8000${singleProduct?.image}`}
             alt="Drum image"
             sx={{ objectFit: "contain", pt: { lg: 0, md: 0, xs: 5 } }}
           />
@@ -114,7 +113,7 @@ export default function Main() {
               fontWeight: "600",
             }}
           >
-            {idProduct.name}
+            {singleProduct.name}
           </Typography>
           <Stack
             direction="row"
@@ -127,7 +126,7 @@ export default function Main() {
             <Rating
               key={"rating"}
               name="half-rating-read"
-              value={parseInt(idProduct.rating)}
+              value={parseInt(singleProduct.rating)}
               precision={0.5}
               readOnly
             />
@@ -136,14 +135,14 @@ export default function Main() {
               color="text.secondary"
               gutterBottom
             >
-              {idProduct.numReviews + " reviews"}
+              {singleProduct.numReviews + " reviews"}
             </Typography>
           </Stack>
           <Typography sx={{ mt: 3.5, fontSize: 30, fontWeight: "600" }}>
-            {"$ " + idProduct.price}
+            {"$ " + singleProduct.price}
           </Typography>
           <Typography sx={{ pr: 3, fontSize: 14, textAlign: "justify" }}>
-            {idProduct.description}
+            {singleProduct.description}
           </Typography>
           <Button
             startIcon={<ShoppingCartIcon />}
