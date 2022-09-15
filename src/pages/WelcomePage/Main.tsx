@@ -5,6 +5,7 @@ import { CardItem } from "../../types/Types";
 import Footer from "./Footer";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { getProducts } from "../features/productSlice";
+import Spinner from "../../components/Spinner";
 
 export default function Main() {
   const { products, error, loading } = useAppSelector(
@@ -69,31 +70,32 @@ export default function Main() {
           spacing={4}
           sx={{
             p: 10,
-
             display: "flex",
-
             justifyContent: "center",
             bgcolor: "rgb(204,193,185)",
           }}
         >
-          {products?.map((product: CardItem) => {
-            return (
-              <Grid key={product._id} item>
-                <ProductCard
-                  name={product.name}
-                  img={product.image}
-                  desc={product.description}
-                  rating={product.rating}
-                  price={product.price}
-                  reviews={product.numReviews}
-                  id={product._id}
-                />
-              </Grid>
-            );
-          })}
+          {loading ? (
+            <Spinner />
+          ) : (
+            products?.map((product: CardItem) => {
+              return (
+                <Grid key={product._id} item>
+                  <ProductCard
+                    name={product.name}
+                    img={product.image}
+                    desc={product.description}
+                    rating={product.rating}
+                    price={product.price}
+                    reviews={product.numReviews}
+                    id={product._id}
+                  />
+                </Grid>
+              );
+            })
+          )}
         </Grid>
       )}
-
       <Footer />
     </Box>
   );

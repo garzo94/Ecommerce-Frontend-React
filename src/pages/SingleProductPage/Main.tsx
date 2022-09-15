@@ -9,12 +9,21 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useParams } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { getProduct } from "../features/productSlice";
+import IncrementBtn from "../../components/incrementBtn";
+import { useNavigate } from "react-router-dom";
+
 export default function Main() {
+  const { qty } = useAppSelector((state) => state.quantity);
+  const navigate = useNavigate();
+
   const { singleProduct, loading } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
 
   console.log(singleProduct.rating);
   let { id } = useParams();
+  const addToCartHandler = () => {
+    navigate(`/cart/${id}?qty=${qty}`);
+  };
 
   useEffect(() => {
     if (id) {
@@ -144,8 +153,10 @@ export default function Main() {
           <Typography sx={{ pr: 3, fontSize: 14, textAlign: "justify" }}>
             {singleProduct.description}
           </Typography>
+          <IncrementBtn />
           <Button
             startIcon={<ShoppingCartIcon />}
+            onClick={addToCartHandler}
             sx={{
               color: "white",
 

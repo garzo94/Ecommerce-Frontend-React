@@ -5,10 +5,10 @@ import React from "react";
 export default function Spinner() {
   return (
     <Puff
-      height="80"
-      width="80"
-      radius={2}
-      color="black"
+      height="200"
+      width="200"
+      radius={15}
+      color="rgba(255,255,255,0.5)"
       ariaLabel="puff-loading"
       wrapperStyle={{}}
       wrapperClass=""
