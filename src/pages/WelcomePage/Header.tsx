@@ -12,12 +12,18 @@ import {
   Tooltip,
   MenuItem,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import { useAppSelector } from "../../hooks/hooks";
 
 const pages = ["Car", "Login"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
+  const { items } = useAppSelector((state) => state.car);
+  const { qty } = useAppSelector((state) => state.quantity);
+  const [total, setTotal] = React.useState<number>();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -25,9 +31,6 @@ const Header = () => {
     null
   );
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -39,6 +42,14 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  React.useEffect(() => {
+    if (items.length !== 0) {
+      items.map((it) => {
+        setTotal(it.idProduct);
+      });
+    }
+  }, [items]);
 
   return (
     <AppBar
@@ -68,43 +79,6 @@ const Header = () => {
             DrumShop
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-
           <Box
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex", gap: 15 } }}
           >
@@ -115,16 +89,20 @@ const Header = () => {
                 sx={{
                   my: 2,
                   color: "white",
-                  display: "block",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                   boxShadow: "0 2px 5px rgba(255,255,255,0.1)",
                   borderTop: "1px solid rgba(255,255,255,0.2) ",
                   borderBottom: "1px solid rgba(255,255,255,0.2) ",
+
                   borderRadius: "15px",
-                  width: "75px",
+                  width: "85px",
                   letterSpacing: "1px",
                   transition: "0.5s",
                   "&:hover": {
                     letterSpacing: "1.5px",
+                    background: "rgba(204,193,185,0.2)",
                   },
                   "&::before": {
                     content: "''",
@@ -144,7 +122,42 @@ const Header = () => {
                   },
                 }}
               >
-                {page}
+                {page === "Car" ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <ShoppingCart />
+                    Car
+                    {total! >= 1 && total ? (
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: "-17px",
+                          right: "-16px",
+                          height: "22px",
+                          width: "22px",
+                          backgroundColor: "rgba(255, 0, 0, 0.3)",
+                          borderRadius: "50%",
+                          fontSize: "12px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          border: "1px solid rgba(255, 0, 0, 0.2)",
+                          color: "rgba(255,255,255,0.8)",
+                          fontWeight: 600,
+                        }}
+                      >
+                        <span>{total}</span>
+                      </div>
+                    ) : null}
+                  </Box>
+                ) : (
+                  page
+                )}
               </Button>
             ))}
           </Box>

@@ -3,7 +3,8 @@ import { Box } from "@mui/material";
 import IndexWelcomePage from "./pages/WelcomePage/IndexWelcomePage";
 import "./App.css";
 import IndexSingleProduc from "./pages/SingleProductPage/IndexSingleProduc";
-import CartPage from "./pages/CartPage/CartPage";
+
+import ShopingPage from "./pages/shopingCar/ShopingPage";
 function App() {
   return (
     <Router>
@@ -16,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<IndexWelcomePage />} />
           <Route path="/product/:id" element={<IndexSingleProduc />} />
-          <Route path="/cart/:id" element={<CartPage />} />
+          <Route path="/cart/:id" element={<ShopingPage />} />
         </Routes>
       </Box>
     </Router>

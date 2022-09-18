@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button, Typography, Box } from "@mui/material";
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { quantity } from "../pages/features/quantitySlice";
 
 export default function IncrementBtn() {
-  const [counter, setCounter] = useState(0);
+  const { qty } = useAppSelector((state) => state.quantity);
+
+  const [counter, setCounter] = useState(1);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(quantity(counter));
@@ -45,7 +47,7 @@ export default function IncrementBtn() {
             alignItems: "center",
           }}
         >
-          {counter}
+          {qty}
         </Typography>
       }
 

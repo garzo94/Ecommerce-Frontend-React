@@ -62,7 +62,7 @@ export default function ProducCard({
             {name}
           </Typography>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {desc}
+            {desc.substring(0, 35) + "..."}
           </Typography>
           <Stack
             sx={{

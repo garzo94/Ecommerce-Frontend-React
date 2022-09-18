@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 const url = 'http://127.0.0.1:8000/api/products/'
-const url2 = 'http://127.0.0.1:8000/api/products/'
+
 type productType = {
   name: string;
   img: string;

@@ -13,7 +13,7 @@ export default function Main() {
   );
 
   const dispatch = useAppDispatch();
-  console.log(error, loading, "heey");
+
   useEffect(() => {
     dispatch(getProducts());
   }, []);

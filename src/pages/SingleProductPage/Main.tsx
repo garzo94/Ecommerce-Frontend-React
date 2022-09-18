@@ -11,18 +11,22 @@ import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { getProduct } from "../features/productSlice";
 import IncrementBtn from "../../components/incrementBtn";
 import { useNavigate } from "react-router-dom";
+import { addCar } from "../features/carSlice";
+import { postCarItems } from "../features/carSlice";
 
 export default function Main() {
   const { qty } = useAppSelector((state) => state.quantity);
   const navigate = useNavigate();
 
-  const { singleProduct, loading } = useAppSelector((state) => state.products);
+  const { singleProduct, loading } = useAppSelector(
+    (state: any) => state.products
+  );
   const dispatch = useAppDispatch();
 
-  console.log(singleProduct.rating);
   let { id } = useParams();
   const addToCartHandler = () => {
-    navigate(`/cart/${id}?qty=${qty}`);
+    dispatch(postCarItems({ id_prod: parseInt(id!), total: qty }));
+    navigate(`/cart/${id}`);
   };
 
   useEffect(() => {

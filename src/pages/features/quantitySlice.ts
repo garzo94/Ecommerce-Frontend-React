@@ -1,4 +1,6 @@
+
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+
 
 
 
@@ -8,12 +10,9 @@ type InitialStateType = {
 }
 
 const initialState:InitialStateType = {
-    qty: 0,
+    qty: 1,
 
 }
-
-
-
 
 export const quantitySlice = createSlice({
 
