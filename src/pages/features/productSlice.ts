@@ -3,12 +3,14 @@ const url = 'http://127.0.0.1:8000/api/products/'
 
 type productType = {
   name: string;
-  img: string;
+  image: string;
   desc: string;
   rating: number;
+  brand:string,
+  category:string,
   price: number;
   reviews: number;
-  id: string;
+  _id: number;
 };
 
 type InitialStateType = {
@@ -38,7 +40,6 @@ export const getProduct = createAsyncThunk('products/getProduct', async ({id}:{i
 })
 
 export const productSlice = createSlice({
-
     name:'products',
     initialState,
     reducers:{},
@@ -81,8 +82,6 @@ export const productSlice = createSlice({
                 state.loading = false
                 state.error = action.error.message || 'Something went wrong'
               })
-    }
-
-    })
+    }})
 
 export default productSlice.reducer

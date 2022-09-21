@@ -12,17 +12,21 @@ import {
   Tooltip,
   MenuItem,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { getCarItems } from "../features/carSlice";
+import { useNavigate } from "react-router-dom";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 
 const pages = ["Car", "Login"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { items } = useAppSelector((state) => state.car);
+
   const { qty } = useAppSelector((state) => state.quantity);
-  const [total, setTotal] = React.useState<number>();
+  const [total, setTotal] = React.useState<number>(0);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -39,17 +43,29 @@ const Header = () => {
     setAnchorElNav(null);
   };
 
+  function handleNavigate(page: string) {
+    if (page === "Car") {
+      navigate("/car");
+    }
+  }
+
+  function totalItmes() {
+    let total = 0;
+    Object.entries(items).forEach(([key, value]) => {
+      total += value.total;
+    });
+
+    setTotal(total);
+  }
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
   React.useEffect(() => {
-    if (items.length !== 0) {
-      items.map((it) => {
-        setTotal(it.idProduct);
-      });
-    }
+    totalItmes();
   }, [items]);
+  React.useEffect(() => {
+    dispatch(getCarItems());
+  }, []);
 
   return (
     <AppBar
@@ -85,7 +101,7 @@ const Header = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleNavigate(page)}
                 sx={{
                   my: 2,
                   color: "white",

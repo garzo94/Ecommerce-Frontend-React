@@ -1,33 +1,38 @@
 
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
 
-type carItems = {
-    idProduct: number;
-    totalProduct: number
-  };
+
 
 type dataType = {
     id_prod:number,
     total:number,
 }
 
+type updateData = {
+  id:number,
+  total:number
+}
 
 type InitialStateType = {
-    items:carItems[],
-   loading:boolean
+  loading:boolean,
+  error:string
+  items:dataType[],
+
 }
 
 const initialState:InitialStateType = {
-    items:[],
-    loading:false
-}
+  loading:false,
+  error:'',
+  items:[],
 
-export const getCarItems = createAsyncThunk('car/getCarItems', async ({id}:{id:number})=>{
-    return fetch(`http://127.0.0.1:8000/api/car/${id}`)
+}
+// reading data
+export const getCarItems = createAsyncThunk('car/getCarItems', ()=>{
+    return fetch('http://127.0.0.1:8000/api/car/')
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
 })
-
+// creating data
 export const postCarItems = createAsyncThunk('car/postCarItems', async (data:dataType)=>{
     return fetch(`http://127.0.0.1:8000/api/car/`, {method: 'POST',
     headers: { 'Content-Type': 'application/json' },body:JSON.stringify(data)})
@@ -35,16 +40,20 @@ export const postCarItems = createAsyncThunk('car/postCarItems', async (data:dat
     .catch((err)=> console.log(err))
 })
 
+// updating data
+export const updateCarItems = createAsyncThunk('car/updateCarItems', async (data:updateData,)=>{
+  return fetch(`http://127.0.0.1:8000/api/car/${data.id}`, {method: 'PUT',
+  headers: { 'Content-Type': 'application/json' }, body:JSON.stringify({total:data.total})})
+  .then((resp) => resp.json())
+  .catch((err)=> console.log(err))
+})
+
 export const carSlice = createSlice({
+
     name:'car',
     initialState,
-    reducers:{ addCar: (state,{payload} )=>{
 
-       state.items = state.items.filter((ite)=>ite.idProduct !== payload.idProduct)
-    //    console.log(payload)
-       state.items.push(payload)
-
-    }},
+    reducers:{},
     extraReducers: builder=>{
         // geting data
         builder.addCase(getCarItems.pending, state=>{
@@ -53,15 +62,19 @@ export const carSlice = createSlice({
 
         builder.addCase(
           getCarItems.fulfilled,
-          (state, action: PayloadAction<carItems[]>) => {
+          (state, action: PayloadAction<dataType[]>) => {
             state.loading = false
             state.items = action.payload
+            state.error = 'noError'
+
           })
 
         builder.addCase(getCarItems.rejected, (state, action) => {
               console.log('heey')
               state.loading = false
               state.items = []
+              state.error = action.error.message || 'error'
+
             })
 
         // creating data
@@ -74,15 +87,30 @@ export const carSlice = createSlice({
             postCarItems.fulfilled,
             (state) => {
               state.loading = false
+
             })
 
-        builder.addCase(postCarItems.rejected, (state, action) => {
+        builder.addCase(postCarItems.rejected, (state, ) => {
                 state.loading = false
               })
 
+        // updating data
 
+        builder.addCase(updateCarItems.pending, state=>{
+          state.loading = true
+        })
 
+      builder.addCase(
+          updateCarItems.fulfilled,
+          (state) => {
+            state.loading = false
+
+          })
+
+      builder.addCase(updateCarItems.rejected, (state, ) => {
+              state.loading = false
+            })
 }})
 
 export default carSlice.reducer
-export  const {addCar} = carSlice.actions
+// export  const {addCar} = carSlice.actions

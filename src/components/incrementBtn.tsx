@@ -2,12 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Button, Typography, Box } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { quantity } from "../pages/features/quantitySlice";
+import { updateCarItems } from "../pages/features/carSlice";
 
-export default function IncrementBtn() {
+interface Props {
+  disable: boolean;
+  idprod?: number;
+  currentTotal?: number;
+}
+
+export default function IncrementBtn({ disable, idprod, currentTotal }: Props) {
   const { qty } = useAppSelector((state) => state.quantity);
 
   const [counter, setCounter] = useState(1);
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (idprod) {
+      dispatch(updateCarItems({ id: idprod, total: qty }));
+    }
+  }, [idprod]);
   useEffect(() => {
     dispatch(quantity(counter));
   }, [counter]);
@@ -24,6 +36,7 @@ export default function IncrementBtn() {
     >
       <Button
         size="small"
+        disabled={disable}
         sx={{
           border: "1px solid gray",
           color: "black",
@@ -47,13 +60,13 @@ export default function IncrementBtn() {
             alignItems: "center",
           }}
         >
-          {qty}
+          {currentTotal ? currentTotal : qty}
         </Typography>
       }
 
       {
         <Button
-          disabled={counter <= 0}
+          disabled={counter <= 0 || disable}
           sx={{
             border: "1px solid gray",
             borderRadius: "5px",

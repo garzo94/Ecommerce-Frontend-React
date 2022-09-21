@@ -11,19 +11,29 @@ import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { getProduct } from "../features/productSlice";
 import IncrementBtn from "../../components/incrementBtn";
 import { useNavigate } from "react-router-dom";
-import { addCar } from "../features/carSlice";
+
 import { postCarItems } from "../features/carSlice";
 
 export default function Main() {
+  const { items } = useAppSelector((state) => state.car);
   const { qty } = useAppSelector((state) => state.quantity);
-  const navigate = useNavigate();
-
   const { singleProduct, loading } = useAppSelector(
     (state: any) => state.products
   );
+  const navigate = useNavigate();
+  const [isInCar, setIsInCar] = useState(false);
   const dispatch = useAppDispatch();
-
   let { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      items.map((it) => {
+        if (Number(id) === it.id_prod) {
+          setIsInCar(true);
+        }
+      });
+    }
+  }, [id]);
   const addToCartHandler = () => {
     dispatch(postCarItems({ id_prod: parseInt(id!), total: qty }));
     navigate(`/cart/${id}`);
@@ -157,10 +167,11 @@ export default function Main() {
           <Typography sx={{ pr: 3, fontSize: 14, textAlign: "justify" }}>
             {singleProduct.description}
           </Typography>
-          <IncrementBtn />
+          <IncrementBtn disable={isInCar} />
           <Button
             startIcon={<ShoppingCartIcon />}
             onClick={addToCartHandler}
+            disabled={isInCar}
             sx={{
               color: "white",
 
@@ -168,7 +179,7 @@ export default function Main() {
               borderRadius: "15px",
               width: { lg: "40%", md: "50%", xs: "60%" },
               letterSpacing: "1px",
-
+              textTransform: "capitalize",
               mt: 2,
               transition: "0.5s",
               "&:hover": {
@@ -190,9 +201,12 @@ export default function Main() {
               "&:hover::before": {
                 transform: "skewX(45deg) translateX(30%)",
               },
+              "&.Mui-disabled": {
+                color: "gray",
+              },
             }}
           >
-            Add to Car
+            {isInCar ? "Item already in car" : "Add to car"}
           </Button>
         </Box>
       </Box>
