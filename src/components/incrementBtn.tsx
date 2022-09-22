@@ -15,14 +15,23 @@ export default function IncrementBtn({ disable, idprod, currentTotal }: Props) {
 
   const [counter, setCounter] = useState(1);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (idprod) {
-      dispatch(updateCarItems({ id: idprod, total: qty }));
+      console.log("que pedo");
+      dispatch(updateCarItems({ id: idprod, total: counter }));
     }
-  }, [idprod]);
+  }, [counter]);
+
   useEffect(() => {
     dispatch(quantity(counter));
   }, [counter]);
+
+  useEffect(() => {
+    if (currentTotal) {
+      setCounter(currentTotal);
+    }
+  }, [currentTotal]);
 
   return (
     <Box
@@ -60,7 +69,7 @@ export default function IncrementBtn({ disable, idprod, currentTotal }: Props) {
             alignItems: "center",
           }}
         >
-          {currentTotal ? currentTotal : qty}
+          {counter}
         </Typography>
       }
 

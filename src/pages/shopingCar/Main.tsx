@@ -3,7 +3,7 @@ import { Box, Typography, CardMedia, Button, IconButton } from "@mui/material";
 import IncrementBtn from "../../components/incrementBtn";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { getCarItems } from "../features/carSlice";
+import { getCarItems, deleteCarItems } from "../features/carSlice";
 import { getProduct, getProducts } from "../features/productSlice";
 
 export default function Main() {
@@ -21,19 +21,26 @@ export default function Main() {
     dispatch(getProducts());
   }, []);
 
+  function handleDeleteItem(id: number) {
+    dispatch(deleteCarItems(id));
+    dispatch(getCarItems());
+  }
+
   const itemsValues = items.map((it) => it.id_prod);
 
   const productsCar = products.filter((obj) => {
     return itemsValues.includes(obj._id);
   });
 
-  function totalProdInCar(id: number): number {
+  function totalProdInCar(id: number) {
+    let totalProd;
     items.map((it) => {
       if (id === it.id_prod) {
+        totalProd = it.total;
         return it.total;
       }
     });
-    return 5;
+    return totalProd;
   }
 
   function totalMoney() {
@@ -66,7 +73,11 @@ export default function Main() {
           position: "relative",
         }}
       >
-        <IconButton size="large" sx={{ position: "absolute", right: "10px" }}>
+        <IconButton
+          onClick={() => handleDeleteItem(prod._id)}
+          size="large"
+          sx={{ position: "absolute", right: "10px" }}
+        >
           <CloseIcon />
         </IconButton>
         <CardMedia
@@ -96,7 +107,11 @@ export default function Main() {
           <Typography sx={{ fontSize: "14px", mb: 1 }}>
             {prod.brand} - {prod.category}
           </Typography>
-          <IncrementBtn disable={false} idprod={totalProdInCar(prod._id)} />
+          <IncrementBtn
+            disable={false}
+            idprod={prod._id}
+            currentTotal={totalProdInCar(prod._id)}
+          />
         </Box>
       </Box>
     );

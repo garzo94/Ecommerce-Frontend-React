@@ -36,7 +36,7 @@ export default function Main() {
   }, [id]);
   const addToCartHandler = () => {
     dispatch(postCarItems({ id_prod: parseInt(id!), total: qty }));
-    navigate(`/cart/${id}`);
+    navigate(`/car/`);
   };
 
   useEffect(() => {
