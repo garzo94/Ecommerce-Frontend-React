@@ -1,0 +1,76 @@
+import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
+
+type authUserType = {
+  refresh:string,
+  access:string,
+  id:number | null,
+  _id:number | null,
+  username:string,
+  name:string,
+  email: string,
+  token:string,
+
+}
+
+type initialStateType = {
+    loading:boolean,
+    error:string,
+    authUser:authUserType,
+    isAuthenticated : boolean
+}
+
+const initialState:initialStateType = {
+    loading:false,
+    error:'',
+    authUser:{ refresh:'',
+        access:'',
+        id:null,
+        _id:null,
+        username:'',
+        name:'',
+        email: '',
+        token:'',},
+    isAuthenticated:false
+}
+
+const getToken = localStorage.getItem("authToken")
+
+
+
+// Login
+export const loginUser = createAsyncThunk('login/user',async (data)=>{
+    return fetch(`http://localhost:8000/api/users/login/`,{method:'POST', headers:{
+        'Authorization':`Bearen ${getToken}`
+    }})
+    .then((resp)=> resp.json())
+    .catch((err)=> console.log(err))
+})
+
+
+export const authUserSlice = createSlice({
+    name:'login',
+    initialState,
+    reducers:{},
+    extraReducers: buillder =>{
+        buillder.addCase(loginUser.pending, state=>{
+            state.loading = true
+        })
+
+    buillder.addCase(
+            loginUser.fulfilled, (state, action:PayloadAction<authUserType>)=>{
+                state.loading = false
+                state.authUser = action.payload
+
+                localStorage.setItem("authToken", action.payload.token);
+                state.isAuthenticated = true
+                state.error = 'no error'
+            })
+
+    buillder.addCase(
+        loginUser.rejected, (state, action)=>{
+            state.loading = false
+            state.error = action.error.message || 'error'
+        })
+    }})
+
+export default authUserSlice.reducer
