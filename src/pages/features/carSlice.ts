@@ -28,13 +28,13 @@ const initialState:InitialStateType = {
 }
 // reading data
 export const getCarItems = createAsyncThunk('car/getCarItems', ()=>{
-    return fetch('http://127.0.0.1:8000/api/car/')
+    return fetch('http://127.0.0.1:8000/api/products/car/')
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
 })
 // creating data
 export const postCarItems = createAsyncThunk('car/postCarItems', async (data:dataType)=>{
-    return fetch(`http://127.0.0.1:8000/api/car/`, {method: 'POST',
+    return fetch(`http://127.0.0.1:8000/api/products/car/`, {method: 'POST',
     headers: { 'Content-Type': 'application/json' },body:JSON.stringify(data)})
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
@@ -42,7 +42,7 @@ export const postCarItems = createAsyncThunk('car/postCarItems', async (data:dat
 
 // updating data
 export const updateCarItems = createAsyncThunk('car/updateCarItems', async (data:updateData,)=>{
-  return fetch(`http://127.0.0.1:8000/api/car/${data.id}/`, {method: 'PUT',
+  return fetch(`http://127.0.0.1:8000/api/products/car/${data.id}/`, {method: 'PUT',
   headers: { 'Content-Type': 'application/json' }, body:JSON.stringify({total:data.total})})
   .then((resp) => resp.json())
   .catch((err)=> console.log(err))
@@ -50,7 +50,7 @@ export const updateCarItems = createAsyncThunk('car/updateCarItems', async (data
 
 // deleting data
 export const deleteCarItems = createAsyncThunk('car/deleteCarItems', async (id:number,)=>{
-  return fetch(`http://127.0.0.1:8000/api/car/${id}/`, {method: 'DELETE'})
+  return fetch(`http://127.0.0.1:8000/api/products/car/${id}/`, {method: 'DELETE'})
 
   .then((resp) => resp.json())
   .catch((err)=> console.log(err))

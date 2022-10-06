@@ -28,7 +28,7 @@ const initialState:InitialStateType = {
 }
 
 export const getProducts = createAsyncThunk('products/getProducts',()=>{
-    return fetch(url)
+    return fetch(url+'all/')
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
 })
@@ -44,6 +44,7 @@ export const productSlice = createSlice({
     initialState,
     reducers:{},
     extraReducers: builder=>{
+      // get productss
       builder.addCase(getProducts.pending, state=>{
         state.loading = true
       })
@@ -51,13 +52,14 @@ export const productSlice = createSlice({
       builder.addCase(
         getProducts.fulfilled,
         (state, action: PayloadAction<productType[]>) => {
+
           state.loading = false
           state.products = action.payload
           state.error = "noError"
         })
 
         builder.addCase(getProducts.rejected, (state, action) => {
-            console.log('heey')
+
             state.loading = false
             state.products = []
             state.error = action.error.message || 'Something went wrong'

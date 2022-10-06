@@ -67,16 +67,20 @@ export default function Main() {
         sx={{
           p: 2,
           mt: 4,
-          mx: 25,
+          mx: { lg: 25, md: 25, sm: 0, xs: 0 },
           display: "flex",
           borderBottom: "1px solid gray",
           position: "relative",
+          width: { lg: "60%", md: "60%", sm: "90%", xs: "90%" },
         }}
       >
         <IconButton
           onClick={() => handleDeleteItem(prod._id)}
           size="large"
-          sx={{ position: "absolute", right: "10px" }}
+          sx={{
+            position: "absolute",
+            right: { lg: "10px", md: "10px", sm: "20px", xs: "20px" },
+          }}
         >
           <CloseIcon />
         </IconButton>
@@ -118,27 +122,42 @@ export default function Main() {
   });
 
   return (
-    <Box className="sdf" sx={{ display: "flex", width: "100%", mt: 8 }}>
+    <Box
+      className="sdf"
+      sx={{
+        display: "flex",
+        flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
+        alignItems: "center",
+        width: "100%",
+        mt: 8,
+      }}
+    >
       <Typography
         sx={{
           position: "absolute",
-          left: "100px",
+          left: { lg: "100px", md: "80px", sm: "50px", xs: "25px" },
           top: "85px",
           fontWeight: "600",
-          fontSize: "50px",
+          fontSize: { lg: "50px", md: "50px", sm: "30px", xs: "25px" },
         }}
       >
         Shoping Car{" "}
       </Typography>
 
-      <Box sx={{ display: "flex", flexDirection: "column", width: "60%" }}>
-        {itemsCar}
-      </Box>
-
       <Box
         sx={{
-          width: "20%",
-          mt: 0,
+          display: "flex",
+          flexDirection: "column",
+          width: { lg: "60%", md: "60%", sm: "100%", xs: "100%" },
+        }}
+      >
+        {itemsCar}
+      </Box>
+      {/* $$$$$$ CHeck out section $$$$$$$$ */}
+      <Box
+        sx={{
+          width: { lg: "20%", md: "20%", xm: "100%", xs: "90%" },
+          mt: 1,
           bgcolor: "rgba(204,193,185,0.5)",
           p: 2,
           borderRadius: "15px",
