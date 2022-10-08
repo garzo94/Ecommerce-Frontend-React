@@ -55,6 +55,22 @@ export const loginUser = createAsyncThunk('login/user',async (data:{username:str
     .catch((err)=>  Promise.reject())
 })
 
+// Sign up
+export const signupUser = createAsyncThunk('register/user',async (data:{name:string,email:string, password:string})=>{
+
+    return fetch(`http://localhost:8000/api/users/register/`,{
+        method:'POST',
+        body:JSON.stringify(data),
+
+    headers:{
+        'Content-Type': 'application/json',
+
+    }})
+    .then((resp)=>{if(!resp.ok){return Promise.reject()}return resp.json()} )
+    .catch((err)=>  Promise.reject())
+})
+
+
 
 export const authUserSlice = createSlice({
     name:'login',
@@ -64,6 +80,8 @@ export const authUserSlice = createSlice({
         state.isAuthenticated = false
     }},
     extraReducers: buillder =>{
+
+        //Login
         buillder.addCase(loginUser.pending, state=>{
             state.loading = true
         })
@@ -72,11 +90,8 @@ export const authUserSlice = createSlice({
             loginUser.fulfilled, (state, action:PayloadAction<authUserType>)=>{
                 state.loading = false
                 state.authUser = action.payload
-
                 localStorage.setItem("authToken", action.payload.token);
-
                 state.isAuthenticated = true
-
                 state.error = ''
 
             })
@@ -87,6 +102,30 @@ export const authUserSlice = createSlice({
             state.loading = false
             state.error = 'Invalid credentials, try again!'
         })
+
+        // sign up
+  buillder.addCase(signupUser.pending, state=>{
+    state.loading = true
+})
+
+buillder.addCase(
+    signupUser.fulfilled, (state, action:PayloadAction<authUserType>)=>{
+        state.loading = false
+        state.authUser = action.payload
+        localStorage.setItem("authToken", action.payload.token);
+        state.isAuthenticated = true
+        state.error = ''
+
+    })
+
+buillder.addCase(
+    signupUser.rejected, (state, action)=>{
+    state.isAuthenticated = false
+    state.loading = false
+    state.error = 'Invalid credentials, try again!'
+})
+
+
     }})
 
 

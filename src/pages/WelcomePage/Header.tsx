@@ -21,6 +21,7 @@ import FormLogin from "../../components/FormLogin";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { logout } from "../features/authUserSlice";
 import { useSnackbar } from "notistack";
+import SignupForm from "../../components/SingupForm";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const Header = () => {
@@ -29,7 +30,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { items, loggedIn } = useAppSelector((state) => state.car);
   const { isAuthenticated, error } = useAppSelector((state) => state.login);
-
+  const [formType, setFormType] = useState("");
   const { qty } = useAppSelector((state) => state.quantity);
   const [total, setTotal] = React.useState<number>(0);
   const LoginLoggout = loggedIn ? "Logout" : "Login";
@@ -47,15 +48,14 @@ const Header = () => {
   const [anchorElLogin, setAnchorElLogin] = useState<HTMLButtonElement | null>(
     null
   );
-  const handleClickLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorElLogin(event.currentTarget);
-  };
+
   const handleClose = () => {
     setAnchorElLogin(null);
   };
   const openLogin = Boolean(anchorElLogin);
   const id = openLogin ? "Login" : undefined;
   // ########## close poper login #########
+
   useEffect(() => {
     if (isAuthenticated) {
       handleClose();
@@ -67,16 +67,23 @@ const Header = () => {
     page: string
   ) {
     if (page === "Login") {
+      setFormType(page);
       setAnchorElLogin(event.currentTarget);
     }
     if (page === "Car") {
+      setFormType(page);
+
       loggedIn
         ? navigate("/car/")
         : enqueueSnackbar("Login to see your shopping car!");
     }
 
+    if (page === "SignUp") {
+      setFormType(page);
+      setAnchorElLogin(event.currentTarget);
+    }
+
     if (page === "Logout") {
-      console.log("loggg");
       dispatch(logout());
     }
   }
@@ -221,7 +228,7 @@ const Header = () => {
               onClose={handleClose}
               PaperProps={{
                 style: {
-                  height: "250px",
+                  height: "300px",
                   width: "350px",
                   display: "flex",
                   justifyContent: "center",
@@ -233,7 +240,7 @@ const Header = () => {
                 horizontal: "left",
               }}
             >
-              <FormLogin />
+              {formType === "Login" ? <FormLogin /> : <SignupForm />}
             </Popover>
           </Box>
 
