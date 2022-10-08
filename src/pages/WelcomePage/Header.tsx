@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -11,26 +11,30 @@ import {
   Button,
   Tooltip,
   MenuItem,
+  Popover,
 } from "@mui/material";
 import { getCarItems } from "../features/carSlice";
 import { useNavigate } from "react-router-dom";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+import FormLogin from "../../components/FormLogin";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { logout } from "../features/authUserSlice";
+import { useSnackbar } from "notistack";
 
-const pages = ["Car", "Login"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
 const Header = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { items } = useAppSelector((state) => state.car);
+  const { items, loggedIn } = useAppSelector((state) => state.car);
+  const { isAuthenticated, error } = useAppSelector((state) => state.login);
 
   const { qty } = useAppSelector((state) => state.quantity);
   const [total, setTotal] = React.useState<number>(0);
+  const LoginLoggout = loggedIn ? "Logout" : "Login";
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
+  const pages = ["Car", "SignUp", `${LoginLoggout}`];
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -39,16 +43,44 @@ const Header = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  // ############  Poper Login ##############
+  const [anchorElLogin, setAnchorElLogin] = useState<HTMLButtonElement | null>(
+    null
+  );
+  const handleClickLogin = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorElLogin(event.currentTarget);
   };
+  const handleClose = () => {
+    setAnchorElLogin(null);
+  };
+  const openLogin = Boolean(anchorElLogin);
+  const id = openLogin ? "Login" : undefined;
+  // ########## close poper login #########
+  useEffect(() => {
+    if (isAuthenticated) {
+      handleClose();
+    }
+  }, [isAuthenticated]);
 
-  function handleNavigate(page: string) {
+  function handleNavigate(
+    event: React.MouseEvent<HTMLButtonElement>,
+    page: string
+  ) {
+    if (page === "Login") {
+      setAnchorElLogin(event.currentTarget);
+    }
     if (page === "Car") {
-      navigate("/car");
+      loggedIn
+        ? navigate("/car/")
+        : enqueueSnackbar("Login to see your shopping car!");
+    }
+
+    if (page === "Logout") {
+      console.log("loggg");
+      dispatch(logout());
     }
   }
-
+  console.log(isAuthenticated, "authhh");
   function totalItmes() {
     let total = 0;
     Object.entries(items).forEach(([key, value]) => {
@@ -64,8 +96,8 @@ const Header = () => {
     totalItmes();
   }, [items]);
   React.useEffect(() => {
-    dispatch(getCarItems());
-  }, []);
+    dispatch(getCarItems(localStorage.getItem("authToken"))).then(unwrapResult);
+  }, [isAuthenticated]);
 
   return (
     <AppBar
@@ -83,7 +115,7 @@ const Header = () => {
             component="a"
             href="/"
             sx={{
-              mr: 2,
+              ml: 5,
               display: { xs: "none", md: "flex" },
               fontFamily: "'Russo One', sans-serif",
               fontWeight: 700,
@@ -96,12 +128,18 @@ const Header = () => {
           </Typography>
 
           <Box
-            sx={{ flexGrow: 1, display: { xs: "none", md: "flex", gap: 15 } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex", gap: 15 },
+              justifyContent: "flex-end",
+              mr: 5,
+            }}
           >
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => handleNavigate(page)}
+                onClick={(e) => handleNavigate(e, page)}
+                aria-describedby={id}
                 sx={{
                   my: 2,
                   color: "white",
@@ -176,12 +214,39 @@ const Header = () => {
                 )}
               </Button>
             ))}
+            <Popover
+              id={id}
+              open={openLogin}
+              anchorEl={anchorElLogin}
+              onClose={handleClose}
+              PaperProps={{
+                style: {
+                  height: "250px",
+                  width: "350px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              }}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <FormLogin />
+            </Popover>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box
+            sx={{
+              flexGrow: 0,
+              display: { lg: "none", md: "none", sm: "block", xs: "block" },
+              ml: 5,
+            }}
+          >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
               </IconButton>
             </Tooltip>
             <Menu

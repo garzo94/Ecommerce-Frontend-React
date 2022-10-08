@@ -14,12 +14,17 @@ export default function IncrementBtn({ disable, idprod, currentTotal }: Props) {
   const { qty } = useAppSelector((state) => state.quantity);
 
   const [counter, setCounter] = useState(1);
+  const total = currentTotal ? currentTotal : counter;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (idprod) {
-      console.log("que pedo");
-      dispatch(updateCarItems({ id: idprod, total: counter }));
+      dispatch(
+        updateCarItems({
+          data: { id: idprod, total: total },
+          token: localStorage.getItem("authToken")!,
+        })
+      );
     }
   }, [counter]);
 

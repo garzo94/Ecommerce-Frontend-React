@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction, createAsyncThunk} from "@reduxjs/toolkit";
-
 type authUserType = {
   refresh:string,
   access:string,
@@ -33,24 +32,37 @@ const initialState:initialStateType = {
     isAuthenticated:false
 }
 
-const getToken = localStorage.getItem("authToken")
+
+    // const getToken = localStorage.getItem("authToken")
+
+
+
 
 
 
 // Login
-export const loginUser = createAsyncThunk('login/user',async (data)=>{
-    return fetch(`http://localhost:8000/api/users/login/`,{method:'POST', headers:{
-        'Authorization':`Bearen ${getToken}`
+export const loginUser = createAsyncThunk('login/user',async (data:{username:string, password:string})=>{
+
+    return fetch(`http://localhost:8000/api/users/login/`,{
+        method:'POST',
+        body:JSON.stringify(data),
+
+    headers:{
+        'Content-Type': 'application/json',
+
     }})
-    .then((resp)=> resp.json())
-    .catch((err)=> console.log(err))
+    .then((resp)=>{if(!resp.ok){return Promise.reject()}return resp.json()} )
+    .catch((err)=>  Promise.reject())
 })
 
 
 export const authUserSlice = createSlice({
     name:'login',
     initialState,
-    reducers:{},
+    reducers:{ logout: (state)=>{
+        localStorage.removeItem('authToken')
+        state.isAuthenticated = false
+    }},
     extraReducers: buillder =>{
         buillder.addCase(loginUser.pending, state=>{
             state.loading = true
@@ -62,15 +74,21 @@ export const authUserSlice = createSlice({
                 state.authUser = action.payload
 
                 localStorage.setItem("authToken", action.payload.token);
+
                 state.isAuthenticated = true
-                state.error = 'no error'
+
+                state.error = ''
+
             })
 
     buillder.addCase(
         loginUser.rejected, (state, action)=>{
+            state.isAuthenticated = false
             state.loading = false
-            state.error = action.error.message || 'error'
+            state.error = 'Invalid credentials, try again!'
         })
     }})
 
+
 export default authUserSlice.reducer
+export const {logout} = authUserSlice.actions

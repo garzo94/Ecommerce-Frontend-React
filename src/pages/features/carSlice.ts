@@ -17,6 +17,7 @@ type InitialStateType = {
   loading:boolean,
   error:string
   items:dataType[],
+  loggedIn:boolean
 
 }
 
@@ -24,35 +25,48 @@ const initialState:InitialStateType = {
   loading:false,
   error:'',
   items:[],
+  loggedIn: false
 
 }
 // reading data
-export const getCarItems = createAsyncThunk('car/getCarItems', ()=>{
-    return fetch('http://127.0.0.1:8000/api/products/car/')
-    .then((resp) => resp.json())
-    .catch((err)=> console.log(err))
+export const getCarItems = createAsyncThunk('car/getCarItems', async (token:string|null,{rejectWithValue, fulfillWithValue})=>{
+
+    const response = await fetch('http://127.0.0.1:8000/api/products/car/',   {
+      headers:{
+      'Authorization': `Bearer ${token}`,
+}
+  })
+  if(!response.ok){
+
+    return rejectWithValue(response.status);
+  }
+
+  return (await response.json())
+
 })
 // creating data
-export const postCarItems = createAsyncThunk('car/postCarItems', async (data:dataType)=>{
+export const postCarItems = createAsyncThunk('car/postCarItems', async ({data,token}:{data:dataType,token:string})=>{
     return fetch(`http://127.0.0.1:8000/api/products/car/`, {method: 'POST',
-    headers: { 'Content-Type': 'application/json' },body:JSON.stringify(data)})
+    headers: { 'Content-Type': 'application/json','Authorization':`Bearer ${token}` },body:JSON.stringify(data)})
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
 })
 
 // updating data
-export const updateCarItems = createAsyncThunk('car/updateCarItems', async (data:updateData,)=>{
+export const updateCarItems = createAsyncThunk('car/updateCarItems', async ({data,token}:{data:updateData, token:string})=>{
   return fetch(`http://127.0.0.1:8000/api/products/car/${data.id}/`, {method: 'PUT',
-  headers: { 'Content-Type': 'application/json' }, body:JSON.stringify({total:data.total})})
+  headers: { 'Content-Type': 'application/json', 'Authorization':`Bearer ${token}` }, body:JSON.stringify({total:data.total})})
   .then((resp) => resp.json())
   .catch((err)=> console.log(err))
 })
 
 // deleting data
-export const deleteCarItems = createAsyncThunk('car/deleteCarItems', async (id:number,)=>{
-  return fetch(`http://127.0.0.1:8000/api/products/car/${id}/`, {method: 'DELETE'})
+export const deleteCarItems = createAsyncThunk('car/deleteCarItems', async ({id,token}:{id:number,token:string|null},)=>{
+  console.log(token,'token')
+  return fetch(`http://127.0.0.1:8000/api/products/car/${id}/`, {method: 'DELETE',
+  headers: { 'Content-Type': 'application/json', 'Authorization':`Bearer ${token}` }})
 
-  .then((resp) => resp.json())
+  .then((resp) => resp)
   .catch((err)=> console.log(err))
 })
 
@@ -66,6 +80,7 @@ export const carSlice = createSlice({
         // geting data
         builder.addCase(getCarItems.pending, state=>{
           state.loading = true
+
         })
 
         builder.addCase(
@@ -73,13 +88,17 @@ export const carSlice = createSlice({
           (state, action: PayloadAction<dataType[]>) => {
             state.loading = false
             state.items = action.payload
-            state.error = 'noError'
+
+            state.loggedIn = true
+            state.error = ''
 
           })
 
         builder.addCase(getCarItems.rejected, (state, action) => {
-              console.log('heey')
+
               state.loading = false
+              state.loggedIn = false
+
               state.items = []
               state.error = action.error.message || 'error'
 

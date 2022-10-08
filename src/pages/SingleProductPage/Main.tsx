@@ -11,7 +11,7 @@ import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { getProduct } from "../features/productSlice";
 import IncrementBtn from "../../components/incrementBtn";
 import { useNavigate } from "react-router-dom";
-
+import Spinner from "../../components/Spinner";
 import { postCarItems } from "../features/carSlice";
 
 export default function Main() {
@@ -35,7 +35,12 @@ export default function Main() {
     }
   }, [id]);
   const addToCartHandler = () => {
-    dispatch(postCarItems({ id_prod: parseInt(id!), total: qty }));
+    dispatch(
+      postCarItems({
+        data: { id_prod: parseInt(id!), total: qty },
+        token: localStorage.getItem("authToken")!,
+      })
+    );
     navigate(`/car/`);
   };
 
@@ -66,13 +71,18 @@ export default function Main() {
             // pb: 32,
           }}
         >
-          <CardMedia
-            component="img"
-            height="100%"
-            image={`http://127.0.0.1:8000${singleProduct?.image}`}
-            alt="Drum image"
-            sx={{ objectFit: "contain", pt: { lg: 0, md: 0, xs: 5 } }}
-          />
+          {loading ? (
+            <Spinner />
+          ) : (
+            <CardMedia
+              component="img"
+              height="100%"
+              image={`http://127.0.0.1:8000${singleProduct?.image}`}
+              alt="Drum image"
+              sx={{ objectFit: "contain", pt: { lg: 0, md: 0, xs: 5 } }}
+            />
+          )}
+
           <Stack
             direction="row"
             sx={{

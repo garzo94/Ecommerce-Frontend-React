@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { getCarItems, deleteCarItems } from "../features/carSlice";
 import { getProduct, getProducts } from "../features/productSlice";
+import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 
 export default function Main() {
   const { items } = useAppSelector((state) => state.car);
@@ -13,8 +14,17 @@ export default function Main() {
   const { qty } = useAppSelector((state) => state.quantity);
   const [totalShoping, setTotalShoping] = useState(0);
   const dispatch = useAppDispatch();
+  const empty = (
+    <Box>
+      <LocalGroceryStoreIcon
+        sx={{ color: "rgba(0,0,0,0.5)", fontSize: 100, mt: 10 }}
+      />
+      <Typography sx={{ fontWeight: "600" }}>Your car is empty</Typography>
+    </Box>
+  );
+
   useEffect(() => {
-    dispatch(getCarItems());
+    dispatch(getCarItems(localStorage.getItem("authToken")));
   }, [qty]);
 
   useEffect(() => {
@@ -22,8 +32,9 @@ export default function Main() {
   }, []);
 
   function handleDeleteItem(id: number) {
-    dispatch(deleteCarItems(id));
-    dispatch(getCarItems());
+    const token = localStorage.getItem("authToken");
+    dispatch(deleteCarItems({ id: id, token: token }));
+    dispatch(getCarItems(token));
   }
 
   const itemsValues = items.map((it) => it.id_prod);
@@ -57,8 +68,6 @@ export default function Main() {
   useEffect(() => {
     totalMoney();
   }, [items]);
-
-  console.log(productsCar, "prod");
 
   const itemsCar = productsCar.map((prod) => {
     return (
@@ -151,7 +160,7 @@ export default function Main() {
           width: { lg: "60%", md: "60%", sm: "100%", xs: "100%" },
         }}
       >
-        {itemsCar}
+        {items.length === 0 ? empty : itemsCar}
       </Box>
       {/* $$$$$$ CHeck out section $$$$$$$$ */}
       <Box
