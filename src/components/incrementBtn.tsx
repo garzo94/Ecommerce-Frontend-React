@@ -13,30 +13,21 @@ interface Props {
 export default function IncrementBtn({ disable, idprod, currentTotal }: Props) {
   const { qty } = useAppSelector((state) => state.quantity);
 
-  const [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState(currentTotal ? currentTotal : 1);
   const total = currentTotal ? currentTotal : counter;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(quantity(counter));
     if (idprod) {
       dispatch(
         updateCarItems({
-          data: { id: idprod, total: total },
+          data: { id: idprod, total: counter },
           token: localStorage.getItem("authToken")!,
         })
       );
     }
   }, [counter]);
-
-  useEffect(() => {
-    dispatch(quantity(counter));
-  }, [counter]);
-
-  useEffect(() => {
-    if (currentTotal) {
-      setCounter(currentTotal);
-    }
-  }, [currentTotal]);
 
   return (
     <Box
@@ -74,7 +65,7 @@ export default function IncrementBtn({ disable, idprod, currentTotal }: Props) {
             alignItems: "center",
           }}
         >
-          {counter}
+          {currentTotal ? currentTotal : counter}
         </Typography>
       }
 

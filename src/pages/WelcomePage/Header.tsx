@@ -87,7 +87,7 @@ const Header = () => {
       dispatch(logout());
     }
   }
-  console.log(isAuthenticated, "authhh");
+
   function totalItmes() {
     let total = 0;
     Object.entries(items).forEach(([key, value]) => {
@@ -120,7 +120,7 @@ const Header = () => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={() => navigate("/")}
             sx={{
               ml: 5,
               display: { xs: "none", md: "flex" },
@@ -129,6 +129,7 @@ const Header = () => {
               letterSpacing: ".2rem",
               color: "inherit",
               textDecoration: "none",
+              "&:hover": { cursor: "pointer" },
             }}
           >
             DrumShop

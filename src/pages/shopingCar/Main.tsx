@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, CardMedia, Button, IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import IncrementBtn from "../../components/incrementBtn";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { getCarItems, deleteCarItems } from "../features/carSlice";
 import { getProduct, getProducts } from "../features/productSlice";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
-
+import { totalPrice } from "../features/carSlice";
 export default function Main() {
   const { items } = useAppSelector((state) => state.car);
   const { products } = useAppSelector((state) => state.products);
-
+  const navigate = useNavigate();
   const { qty } = useAppSelector((state) => state.quantity);
   const [totalShoping, setTotalShoping] = useState(0);
   const dispatch = useAppDispatch();
@@ -26,6 +27,10 @@ export default function Main() {
   useEffect(() => {
     dispatch(getCarItems(localStorage.getItem("authToken")));
   }, [qty]);
+
+  useEffect(() => {
+    dispatch(totalPrice(totalShoping));
+  }, [totalShoping]);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -211,6 +216,7 @@ export default function Main() {
         </Box>
 
         <Button
+          onClick={() => navigate("/order")}
           sx={{
             mt: "50px",
             color: "white",

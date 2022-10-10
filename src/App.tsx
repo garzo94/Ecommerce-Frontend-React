@@ -6,6 +6,7 @@ import IndexSingleProduc from "./pages/SingleProductPage/IndexSingleProduc";
 import { SnackbarProvider } from "notistack";
 
 import ShopingPage from "./pages/shopingCar/ShopingPage";
+import MainOrder from "./pages/PlaceOrder/MainOrder";
 function App() {
   return (
     <SnackbarProvider>
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<IndexWelcomePage />} />
             <Route path="/product/:id" element={<IndexSingleProduc />} />
             <Route path="/car/" element={<ShopingPage />} />
+            <Route path="/order" element={<MainOrder />} />
           </Routes>
         </Box>
       </Router>

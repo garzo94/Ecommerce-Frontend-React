@@ -17,7 +17,8 @@ type InitialStateType = {
   loading:boolean,
   error:string
   items:dataType[],
-  loggedIn:boolean
+  loggedIn:boolean,
+  totalPrice:number
 
 }
 
@@ -25,7 +26,8 @@ const initialState:InitialStateType = {
   loading:false,
   error:'',
   items:[],
-  loggedIn: false
+  loggedIn: false,
+  totalPrice:0
 
 }
 // reading data
@@ -75,7 +77,10 @@ export const carSlice = createSlice({
     name:'car',
     initialState,
 
-    reducers:{},
+    reducers:{totalPrice: (state, action)=>{
+
+      state.totalPrice = action.payload
+    }},
     extraReducers: builder=>{
         // geting data
         builder.addCase(getCarItems.pending, state=>{
@@ -156,4 +161,4 @@ export const carSlice = createSlice({
 }})
 
 export default carSlice.reducer
-// export  const {addCar} = carSlice.actions
+export  const {totalPrice} = carSlice.actions
