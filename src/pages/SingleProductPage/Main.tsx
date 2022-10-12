@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { CardMedia } from "@mui/material";
-import { Box, Typography, Stack, Button, Link, Rating } from "@mui/material";
+import { CardMedia, Rating, Divider } from "@mui/material";
+import { Box, Typography, Stack, Button, Link } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -13,6 +13,7 @@ import IncrementBtn from "../../components/incrementBtn";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import { postCarItems } from "../features/carSlice";
+import FormReview from "../../components/FormReview";
 
 export default function Main() {
   const { items } = useAppSelector((state) => state.car);
@@ -20,6 +21,8 @@ export default function Main() {
   const { singleProduct, loading } = useAppSelector(
     (state: any) => state.products
   );
+
+  console.log(singleProduct, "singleeee");
   const navigate = useNavigate();
   const [isInCar, setIsInCar] = useState(false);
   const dispatch = useAppDispatch();
@@ -218,6 +221,31 @@ export default function Main() {
           >
             {isInCar ? "Item already in car" : "Add to car"}
           </Button>
+
+          {singleProduct.reviews
+            ? singleProduct.reviews.map((data: any) => (
+                <Box sx={{ mt: 5 }}>
+                  <Typography variant="h4">Reviews</Typography>
+                  <Box sx={{ display: "flex", mt: 0.5, alignItems: "center" }}>
+                    <Typography variant="h6">{`${data.name}`}</Typography>
+                    <Rating
+                      sx={{ ml: 1 }}
+                      defaultValue={data.rating}
+                      precision={0.5}
+                      readOnly
+                    />
+                  </Box>
+
+                  <Typography variant="body2" sx={{ color: "gray" }}>
+                    {" "}
+                    {`${data.createdAt}`}
+                  </Typography>
+                  <Typography variant="body1">{data.comment}</Typography>
+                  <Divider />
+                </Box>
+              ))
+            : null}
+          <FormReview id={parseInt(id)!} />
         </Box>
       </Box>
 

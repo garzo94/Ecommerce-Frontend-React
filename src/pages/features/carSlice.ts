@@ -63,9 +63,18 @@ export const updateCarItems = createAsyncThunk('car/updateCarItems', async ({dat
 })
 
 // deleting data
-export const deleteCarItems = createAsyncThunk('car/deleteCarItems', async ({id,token}:{id:number,token:string|null},)=>{
-  console.log(token,'token')
+export const deleteCarItems = createAsyncThunk('car/deleteCarItems', async ({id,token}:{id:number|number[],token:string|null},)=>{
+  console.log(id,'que pasa aquiii')
   return fetch(`http://127.0.0.1:8000/api/products/car/${id}/`, {method: 'DELETE',
+  headers: { 'Content-Type': 'application/json', 'Authorization':`Bearer ${token}` }})
+
+  .then((resp) => resp)
+  .catch((err)=> console.log(err))
+})
+
+export const clearCarItems = createAsyncThunk('car/clearCarItems', async ({token}:{token:string|null},)=>{
+  console.log(token,'token')
+  return fetch(`http://127.0.0.1:8000/api/products/deleteitems/`, {method: 'DELETE',
   headers: { 'Content-Type': 'application/json', 'Authorization':`Bearer ${token}` }})
 
   .then((resp) => resp)
@@ -80,7 +89,8 @@ export const carSlice = createSlice({
     reducers:{totalPrice: (state, action)=>{
 
       state.totalPrice = action.payload
-    }},
+    },
+ },
     extraReducers: builder=>{
         // geting data
         builder.addCase(getCarItems.pending, state=>{
@@ -156,6 +166,23 @@ export const carSlice = createSlice({
         })
 
     builder.addCase(deleteCarItems.rejected, (state, ) => {
+            state.loading = false
+          })
+
+      // clreat order items
+
+      builder.addCase(clearCarItems.pending, state=>{
+        state.loading = true
+      })
+
+    builder.addCase(
+        clearCarItems.fulfilled,
+        (state) => {
+          state.loading = false
+
+        })
+
+    builder.addCase(clearCarItems.rejected, (state, ) => {
             state.loading = false
           })
 }})

@@ -155,7 +155,7 @@ export default function Main() {
           fontSize: { lg: "50px", md: "50px", sm: "30px", xs: "25px" },
         }}
       >
-        Shoping Car{" "}
+        Shopping Cart{" "}
       </Typography>
 
       <Box

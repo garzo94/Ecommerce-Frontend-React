@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../hooks/hooks";
+import { useAppSelector, useAppDispatch } from "../hooks/hooks";
+import { orderItems } from "../pages/features/orderSlice";
 import {
   Table,
   TableBody,
@@ -16,27 +17,19 @@ export default function ItemsCar() {
     image: string;
     total: number;
     price: number;
+    id_prod: number;
   };
 
   const { products } = useAppSelector((state) => state.products);
   const { items } = useAppSelector((state) => state.car);
   const [totalPrice, setTotalPrice] = useState(0);
   const itemsValues = items.map((it) => it.id_prod);
-
+  const dispatch = useAppDispatch();
   const productsCar = products.filter((obj) => {
     return itemsValues.includes(obj._id);
   });
 
   let data: objType[] = [];
-  // computing total price
-  //   useEffect(() => {
-  //     let cum:number
-  //       data.forEach((obj)=>{
-  //         cum += (obj.total*obj.price)
-  //         setTotalPrice(cum)
-  //       })
-
-  //   }, []);
 
   // Data for order items
   productsCar.forEach((obj, index) => {
@@ -46,8 +39,12 @@ export default function ItemsCar() {
       image: obj.image,
       total: myitem.total!,
       price: obj.price,
+      id_prod: obj._id,
     });
   });
+  useEffect(() => {
+    dispatch(orderItems(data));
+  }, []);
 
   return (
     <TableContainer component={Paper}>
