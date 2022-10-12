@@ -66,6 +66,7 @@ const Header = () => {
     event: React.MouseEvent<HTMLButtonElement>,
     page: string
   ) {
+    console.log(page, "pagee");
     if (page === "Login") {
       setFormType(page);
       setAnchorElLogin(event.currentTarget);
@@ -85,6 +86,7 @@ const Header = () => {
 
     if (page === "Logout") {
       dispatch(logout());
+      navigate("/");
     }
   }
 

@@ -37,13 +37,13 @@ interface reviewType {
 
 
 type InitialStateType = {
-  loading:boolean,
+  loadingReview:boolean,
   error:string
   orderItems:orderType[],
 }
 
 const initialState:InitialStateType = {
-  loading:false,
+  loadingReview:false,
   error:'',
   orderItems:[],
 }
@@ -87,34 +87,34 @@ export const orderSlice = createSlice({
 
         // creating data
         builder.addCase(postOrders.pending, state=>{
-            state.loading = true
+            state.loadingReview = true
           })
 
         builder.addCase(
             postOrders.fulfilled,
             (state) => {
-              state.loading = false
+              state.loadingReview = false
 
             })
 
         builder.addCase(postOrders.rejected, (state, ) => {
-                state.loading = false
+                state.loadingReview = false
               })
 
     //   creating a product review
       builder.addCase(postReview.pending, state=>{
-        state.loading = true
+        state.loadingReview = true
       })
 
     builder.addCase(
         postReview.fulfilled,
         (state) => {
-          state.loading = false
+          state.loadingReview = false
 
         })
 
     builder.addCase(postReview.rejected, (state,action ) => {
-            state.loading = false
+            state.loadingReview = false
 
             state.error = action.error.message || 'Something went wrong'
           })

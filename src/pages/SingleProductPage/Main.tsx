@@ -21,8 +21,8 @@ export default function Main() {
   const { singleProduct, loading } = useAppSelector(
     (state: any) => state.products
   );
+  const { loadingReview } = useAppSelector((state) => state.order);
 
-  console.log(singleProduct, "singleeee");
   const navigate = useNavigate();
   const [isInCar, setIsInCar] = useState(false);
   const dispatch = useAppDispatch();
@@ -221,18 +221,19 @@ export default function Main() {
           >
             {isInCar ? "Item already in car" : "Add to car"}
           </Button>
-
+          <Typography variant="h4" sx={{ mt: 8 }}>
+            Reviews
+          </Typography>
           {singleProduct.reviews
             ? singleProduct.reviews.map((data: any) => (
-                <Box sx={{ mt: 5 }}>
-                  <Typography variant="h4">Reviews</Typography>
+                <Box sx={{ mb: 2 }}>
                   <Box sx={{ display: "flex", mt: 0.5, alignItems: "center" }}>
                     <Typography variant="h6">{`${data.name}`}</Typography>
                     <Rating
-                      sx={{ ml: 1 }}
-                      defaultValue={data.rating}
-                      precision={0.5}
                       readOnly
+                      sx={{ ml: 6 }}
+                      value={data.rating}
+                      precision={0.5}
                     />
                   </Box>
 
@@ -245,7 +246,7 @@ export default function Main() {
                 </Box>
               ))
             : null}
-          <FormReview id={parseInt(id)!} />
+          <FormReview id={parseInt(id!)} />
         </Box>
       </Box>
 
