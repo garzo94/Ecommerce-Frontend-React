@@ -78,7 +78,7 @@ export default function Main() {
           {loading ? (
             <Spinner />
           ) : (
-            products?.map((product: CardItem) => {
+            products?.map((product) => {
               return (
                 <Grid key={product._id} item>
                   <ProductCard
