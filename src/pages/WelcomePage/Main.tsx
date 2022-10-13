@@ -30,7 +30,7 @@ export default function Main() {
       >
         <Box
           component="img"
-          src="src\assets\back.jpg"
+          src="/assets/back.jpg"
           sx={{ height: "100%", width: "100%", objectFit: "contain" }}
         ></Box>
         <Typography
