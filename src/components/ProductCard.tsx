@@ -18,7 +18,7 @@ type propType = {
   rating: number;
   price: number;
   reviews: number;
-  id: string;
+  id: number;
 };
 
 export default function ProducCard({

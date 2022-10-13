@@ -6,10 +6,11 @@ type productType = {
   image: string;
   desc: string;
   rating: number;
+  description:string,
   brand:string,
   category:string,
   price: number;
-  reviews: number;
+  numReviews:number,
   _id: number;
 };
 
