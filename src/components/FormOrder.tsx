@@ -87,7 +87,6 @@ export default function FormLogin() {
   });
 
   function handleOrder() {
-    console.log("que pedo");
     formik.handleSubmit();
   }
 
@@ -224,7 +223,26 @@ export default function FormLogin() {
                   "ARUwE3S7TQRrMO_DpQ36HPpq-oBhvlYaNlAmG9A14WCabr0znzMZwYuUy_QSzmSrK0QQUtJE-h3ZcvIr",
               }}
             >
-              <PayPalButtons />
+              <PayPalButtons
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          value: totalPrice.toString(),
+                        },
+                      },
+                    ],
+                  });
+                }}
+                onApprove={(data, actions) => {
+                  return actions!.order!.capture().then((details) => {
+                    const name = details?.payer?.name?.given_name;
+                    enqueueSnackbar(`Transaction completed by ${name}`);
+                    handleOrder();
+                  });
+                }}
+              />
             </PayPalScriptProvider>
             {/* <PayPalButton amount={totalPrice} onSuccess={handleOrder} /> */}
           </Box>

@@ -85,6 +85,7 @@ const Header = () => {
     }
 
     if (page === "Logout") {
+      console.log("heey");
       dispatch(logout());
       navigate("/");
     }

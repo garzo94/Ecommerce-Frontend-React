@@ -14,14 +14,16 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import { postCarItems } from "../features/carSlice";
 import FormReview from "../../components/FormReview";
+import { useSnackbar } from "notistack";
 
 export default function Main() {
+  const { enqueueSnackbar } = useSnackbar();
   const { items } = useAppSelector((state) => state.car);
   const { qty } = useAppSelector((state) => state.quantity);
   const { singleProduct, loading } = useAppSelector(
     (state: any) => state.products
   );
-  const { loadingReview } = useAppSelector((state) => state.order);
+  const { loggedIn } = useAppSelector((state) => state.car);
 
   const navigate = useNavigate();
   const [isInCar, setIsInCar] = useState(false);
@@ -38,12 +40,17 @@ export default function Main() {
     }
   }, [id]);
   const addToCartHandler = () => {
-    dispatch(
-      postCarItems({
-        data: { id_prod: parseInt(id!), total: qty },
-        token: localStorage.getItem("authToken")!,
-      })
-    );
+    if (loggedIn) {
+      dispatch(
+        postCarItems({
+          data: { id_prod: parseInt(id!), total: qty },
+          token: localStorage.getItem("authToken")!,
+        })
+      );
+    } else {
+      enqueueSnackbar("Log in to add this item to the car!");
+    }
+
     navigate(`/car/`);
   };
 
