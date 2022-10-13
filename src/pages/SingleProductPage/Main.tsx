@@ -80,7 +80,7 @@ export default function Main() {
             <CardMedia
               component="img"
               height="100%"
-              image={`http://127.0.0.1:8000${singleProduct?.image}`}
+              image={singleProduct?.image}
               alt="Drum image"
               sx={{ objectFit: "contain", pt: { lg: 0, md: 0, xs: 5 } }}
             />

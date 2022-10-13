@@ -30,6 +30,7 @@ export default function ProducCard({
   reviews,
   id,
 }: propType) {
+  console.log(img);
   return (
     <Link to={`product/${id}`} style={{ textDecoration: "none" }}>
       <Card
@@ -49,7 +50,7 @@ export default function ProducCard({
         <CardMedia
           component="img"
           height="140"
-          image={`http://127.0.0.1:8000${img}`}
+          image={img}
           alt="green iguana"
           sx={{ objectFit: "contain" }}
         />

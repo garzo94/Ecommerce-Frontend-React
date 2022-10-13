@@ -50,7 +50,7 @@ const initialState:InitialStateType = {
 
 // creating data
 export const postOrders = createAsyncThunk('orders/postPorders', async ({data,token}:{data:dataType,token:string})=>{
-    return fetch(`http://127.0.0.1:8000/api/orders/add/`, {method: 'POST',
+    return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/orders/add/`, {method: 'POST',
     headers: { 'Content-Type': 'application/json','Authorization':`Bearer ${token}` },body:JSON.stringify(data)})
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
@@ -59,7 +59,7 @@ export const postOrders = createAsyncThunk('orders/postPorders', async ({data,to
 // creating view product
 export const postReview = createAsyncThunk('orders/postReview', async ({id,data,token}:{id:number,data:reviewType,token:string},{rejectWithValue,fulfillWithValue})=>{
    try{
-    const response = await fetch(`http://127.0.0.1:8000/api/products/${id}/reviews/`, {method: 'POST',
+    const response = await fetch(`https://ecommerce-backend-django-production.up.railway.app/api/products/${id}/reviews/`, {method: 'POST',
    headers: { 'Content-Type': 'application/json','Authorization':`Bearer ${token}` },body:JSON.stringify(data)})
 console.log(response.status,'statusss')
    if(response.status === 401){

@@ -68,7 +68,7 @@ export default function ItemsCar() {
                 <CardMedia
                   component="img"
                   height="100%"
-                  image={`http://127.0.0.1:8000${row.image}`}
+                  image={row.image}
                   alt="Drum image"
                   sx={{ objectFit: "contain", width: "75px", height: "75px" }}
                 />

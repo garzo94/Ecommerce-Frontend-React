@@ -33,7 +33,7 @@ const initialState:InitialStateType = {
 // reading data
 export const getCarItems = createAsyncThunk('car/getCarItems', async (token:string|null,{rejectWithValue, fulfillWithValue})=>{
 
-    const response = await fetch('http://127.0.0.1:8000/api/products/car/',   {
+    const response = await fetch('https://ecommerce-backend-django-production.up.railway.app/api/products/car/',   {
       headers:{
       'Authorization': `Bearer ${token}`,
 }
@@ -48,7 +48,7 @@ export const getCarItems = createAsyncThunk('car/getCarItems', async (token:stri
 })
 // creating data
 export const postCarItems = createAsyncThunk('car/postCarItems', async ({data,token}:{data:dataType,token:string})=>{
-    return fetch(`http://127.0.0.1:8000/api/products/car/`, {method: 'POST',
+    return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/products/car/`, {method: 'POST',
     headers: { 'Content-Type': 'application/json','Authorization':`Bearer ${token}` },body:JSON.stringify(data)})
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
@@ -56,7 +56,7 @@ export const postCarItems = createAsyncThunk('car/postCarItems', async ({data,to
 
 // updating data
 export const updateCarItems = createAsyncThunk('car/updateCarItems', async ({data,token}:{data:updateData, token:string})=>{
-  return fetch(`http://127.0.0.1:8000/api/products/car/${data.id}/`, {method: 'PUT',
+  return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/products/car/${data.id}/`, {method: 'PUT',
   headers: { 'Content-Type': 'application/json', 'Authorization':`Bearer ${token}` }, body:JSON.stringify({total:data.total})})
   .then((resp) => resp.json())
   .catch((err)=> console.log(err))

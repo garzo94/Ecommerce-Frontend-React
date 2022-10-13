@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
-const url = 'http://127.0.0.1:8000/api/products/'
+const url = 'https://ecommerce-backend-django-production.up.railway.app/'
 
 type productType = {
   name: string;
@@ -28,13 +28,13 @@ const initialState:InitialStateType = {
 }
 
 export const getProducts = createAsyncThunk('products/getProducts',()=>{
-    return fetch(url+'all/')
+    return fetch('https://ecommerce-backend-django-production.up.railway.app/api/products/all/')
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
 })
 
 export const getProduct = createAsyncThunk('products/getProduct', async ({id}:{id:string})=>{
-    return fetch(`http://127.0.0.1:8000/api/products/${id}`)
+    return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/products/${id}`)
     .then((resp) => resp.json())
     .catch((err)=> console.log(err))
 })

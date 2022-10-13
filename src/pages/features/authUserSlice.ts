@@ -43,7 +43,7 @@ const initialState:initialStateType = {
 // Login
 export const loginUser = createAsyncThunk('login/user',async (data:{username:string, password:string})=>{
 
-    return fetch(`http://localhost:8000/api/users/login/`,{
+    return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/users/login/`,{
         method:'POST',
         body:JSON.stringify(data),
 
@@ -58,7 +58,7 @@ export const loginUser = createAsyncThunk('login/user',async (data:{username:str
 // Sign up
 export const signupUser = createAsyncThunk('register/user',async (data:{name:string,email:string, password:string})=>{
 
-    return fetch(`http://localhost:8000/api/users/register/`,{
+    return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/users/register/`,{
         method:'POST',
         body:JSON.stringify(data),
 
