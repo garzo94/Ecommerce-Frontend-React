@@ -8,7 +8,7 @@ import ItemsCar from "./ItemsCar";
 import { postOrders } from "../pages/features/orderSlice";
 import { clearCarItems } from "../pages/features/carSlice";
 import { useNavigate } from "react-router-dom";
-import { PayPalButton } from "react-paypal-button-v2";
+// import { PayPalButton } from "react-paypal-button-v2";
 
 const validationSchema = yup.object({
   address: yup.string().required("Address is required"),
@@ -217,7 +217,7 @@ export default function FormLogin() {
             />
           </Box>
           <Box sx={{ p: 3, mt: 5 }}>
-            <PayPalButton amount={totalPrice} onSuccess={handleOrder} />
+            {/* <PayPalButton amount={totalPrice} onSuccess={handleOrder} /> */}
           </Box>
         </Box>
       </Box>
