@@ -9,6 +9,7 @@ import { postOrders } from "../pages/features/orderSlice";
 import { clearCarItems } from "../pages/features/carSlice";
 import { useNavigate } from "react-router-dom";
 // import { PayPalButton } from "react-paypal-button-v2";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const validationSchema = yup.object({
   address: yup.string().required("Address is required"),
@@ -217,6 +218,14 @@ export default function FormLogin() {
             />
           </Box>
           <Box sx={{ p: 3, mt: 5 }}>
+            <PayPalScriptProvider
+              options={{
+                "client-id":
+                  "ARUwE3S7TQRrMO_DpQ36HPpq-oBhvlYaNlAmG9A14WCabr0znzMZwYuUy_QSzmSrK0QQUtJE-h3ZcvIr",
+              }}
+            >
+              <PayPalButtons />
+            </PayPalScriptProvider>
             {/* <PayPalButton amount={totalPrice} onSuccess={handleOrder} /> */}
           </Box>
         </Box>

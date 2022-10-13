@@ -4,9 +4,9 @@ import IndexWelcomePage from "./pages/WelcomePage/IndexWelcomePage";
 import "./App.css";
 import IndexSingleProduc from "./pages/SingleProductPage/IndexSingleProduc";
 import { SnackbarProvider } from "notistack";
-
 import ShopingPage from "./pages/shopingCar/ShopingPage";
 import MainOrder from "./pages/PlaceOrder/MainOrder";
+
 function App() {
   return (
     <SnackbarProvider>
