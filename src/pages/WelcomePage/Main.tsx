@@ -59,7 +59,7 @@ export default function Main() {
           }}
         >
           {" "}
-          Drum to live. Drum to live
+          Drum to live. Live to Drum
         </Typography>
       </Box>
       {error !== "noError" ? (
