@@ -35,7 +35,7 @@ const Header = () => {
   const [total, setTotal] = React.useState<number>(0);
   const LoginLoggout = loggedIn ? "Logout" : "Login";
 
-  const pages = ["Car", "SignUp", `${LoginLoggout}`];
+  const pages = ["Car", "Sign Up", `${LoginLoggout}`];
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -79,7 +79,7 @@ const Header = () => {
         : enqueueSnackbar("Login to see your shopping car!");
     }
 
-    if (page === "SignUp") {
+    if (page === "Sign Up") {
       setFormType(page);
       setAnchorElLogin(event.currentTarget);
     }
