@@ -65,7 +65,7 @@ export const updateCarItems = createAsyncThunk('car/updateCarItems', async ({dat
 // deleting data
 export const deleteCarItems = createAsyncThunk('car/deleteCarItems', async ({id,token}:{id:number|number[],token:string|null},)=>{
   console.log(id,'que pasa aquiii')
-  return fetch(`http://127.0.0.1:8000/api/products/car/${id}/`, {method: 'DELETE',
+  return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/products/car/${id}/`, {method: 'DELETE',
   headers: { 'Content-Type': 'application/json', 'Authorization':`Bearer ${token}` }})
 
   .then((resp) => resp)
@@ -74,7 +74,7 @@ export const deleteCarItems = createAsyncThunk('car/deleteCarItems', async ({id,
 
 export const clearCarItems = createAsyncThunk('car/clearCarItems', async ({token}:{token:string|null},)=>{
   console.log(token,'token')
-  return fetch(`http://127.0.0.1:8000/api/products/deleteitems/`, {method: 'DELETE',
+  return fetch(`https://ecommerce-backend-django-production.up.railway.app/api/products/deleteitems/`, {method: 'DELETE',
   headers: { 'Content-Type': 'application/json', 'Authorization':`Bearer ${token}` }})
 
   .then((resp) => resp)
